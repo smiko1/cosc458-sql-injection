@@ -4,6 +4,8 @@ package cosc458.sql_injection.java;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,12 +30,12 @@ public class DBConnection extends HttpServlet {
         try {
             String user = request.getParameter("username");
             String pass = request.getParameter("password");
-            Connection conn = null;
+            Connection conn;
             String url = "jdbc:mysql://localhost:3306/";
             String dbName = "users";
             String driver = "com.mysql.jdbc.Driver";
             String userName = "root";
-            String password = "YOUR DB PASSWORD";
+            String password = "S4mvqvo5";
             
             try {
                 Class.forName(driver).newInstance();
@@ -53,11 +55,13 @@ public class DBConnection extends HttpServlet {
                 //Statement st = conn.createStatement();
                 //String query = "SELECT * FROM  customers where username='" + user + "' AND password='" + pass + "';";
                 //ResultSet res = st.executeQuery(query);
-                
+                final Pattern userIdPattern = Pattern.compile("^[a-zA-Z0-9]*$");
                 if (!res.isBeforeFirst()) {    
-                    out.print("<h3>Username or password is incorrect. Please click the back button and try again.</h3>");
+                    out.print("<h3>Username or password is incorrect. ERROR due to stored procedures.</h3>");
                     return;
-                } 
+                } else if (!userIdPattern.matcher(user).matches()) {
+                    out.print("<h3>Improper username format - ERROR due to whitelist input validation.</h3>");
+                }
 
                 //out.print("<h3>Query : <br>" + query + "</h3><br><br>");
                 
