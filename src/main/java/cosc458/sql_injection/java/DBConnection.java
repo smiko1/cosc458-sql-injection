@@ -35,7 +35,7 @@ public class DBConnection extends HttpServlet {
             String dbName = "users";
             String driver = "com.mysql.jdbc.Driver";
             String userName = "root";
-            String password = "S4mvqvo5";
+            String password = "password";
             
             try {
                 Class.forName(driver).newInstance();
